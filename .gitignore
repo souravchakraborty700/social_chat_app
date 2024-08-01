@@ -1,0 +1,7 @@
+#ignoring for git push
+.venv/
+*.pyc
+__pycache__/
+
+
+
