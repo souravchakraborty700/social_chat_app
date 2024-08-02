@@ -5,7 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 
 def home(request):
-    return render(request, 'home.html')
+    return render(request, 'D:\\chat_app\\social_chat\\myapp\\templates\\myapp\\home.html')
 
 # Create your views here.
 @csrf_exempt
