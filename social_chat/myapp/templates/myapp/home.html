@@ -1,2 +1,9 @@
-<!-- users/templates/home.html -->
-<h1>Welcome to the Home Page! You're Logged In.</h1>
+<!-- myapp/templates/myapp/home.html -->
+{% extends 'myapp/base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<h2>Welcome to the Home Page</h2>
+<a href="{% url 'logout' %}">Logout</a>
+{% endblock %}

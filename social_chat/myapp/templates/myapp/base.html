@@ -1,0 +1,19 @@
+<!-- myapp/templates/myapp/base.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}MyApp{% endblock %}</title>
+</head>
+<body>
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li class="{% if message.tags %}{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    {% block content %}{% endblock %}
+</body>
+</html>
