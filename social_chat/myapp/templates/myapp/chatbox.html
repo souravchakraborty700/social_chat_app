@@ -1,0 +1,20 @@
+<!-- chatbox.html -->
+{% extends 'D:\\chat_app\\social_chat\\myapp\\templates\\myapp\\base.html' %}
+
+{% block title %}Chat{% endblock %}
+
+{% block content %}
+<h1>Chat with {{ recipient.username }}</h1>
+
+<div id="messages">
+    {% for message in interest.messages.all %}
+        <p><strong>{{ message.sender.username }}:</strong> {{ message.text }} <em>{{ message.timestamp }}</em></p>
+    {% endfor %}
+</div>
+
+<form method="post" action="{% url 'send_message' interest.id %}">
+    {% csrf_token %}
+    <textarea name="text" rows="4" cols="50"></textarea><br>
+    <button type="submit">Send</button>
+</form>
+{% endblock %}

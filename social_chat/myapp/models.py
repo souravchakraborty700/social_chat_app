@@ -1,15 +1,22 @@
+# models.py
 from django.db import models
 from django.contrib.auth.models import User
 
 class Interest(models.Model):
-    sender = models.ForeignKey(User, related_name='sent_interests', on_delete=models.CASCADE)
-    recipient = models.ForeignKey(User, related_name='received_interests', on_delete=models.CASCADE)
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_interests')
+    recipient = models.ForeignKey(User, on_delete=models.CASCADE, related_name='received_interests')
     message = models.TextField()
     accepted = models.BooleanField(default=False)
     rejected = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Interest from {self.sender} to {self.recipient}"
+        return f"{self.sender} -> {self.recipient}"
 
+class Message(models.Model):
+    interest = models.ForeignKey(Interest, on_delete=models.CASCADE, related_name='messages')
+    sender = models.ForeignKey(User, on_delete=models.CASCADE)
+    text = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f"{self.sender}: {self.text[:20]}"

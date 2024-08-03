@@ -5,7 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from .models import Interest
+from .models import Interest, Message
 
 def user_list(request):
     users = User.objects.exclude(id=request.user.id)
@@ -33,7 +33,16 @@ def accept_interest(request, interest_id):
     interest.accepted = True
     interest.save()
     messages.success(request, 'Interest accepted')
-    return redirect('received_interests')
+    return redirect('chat_box', interest_id=interest.id)
+
+@login_required
+def chat_box(request, interest_id):
+    interest = get_object_or_404(Interest, id=interest_id, accepted=True)
+    if request.user not in [interest.sender, interest.recipient]:
+        print("lets see interest.sender, interest.recipeint", interest.sender, interest.recipient)
+        return redirect('received_interests')
+    return render(request, 'D:\\chat_app\\social_chat\\myapp\\templates\\myapp\\chatbox.html', {'interest': interest, 'user': request.user})
+    
 
 @login_required
 def reject_interest(request, interest_id):
@@ -43,8 +52,31 @@ def reject_interest(request, interest_id):
     messages.success(request, 'Interest rejected')
     return redirect('received_interests')
 
-def home(request):
+@login_required
+def send_message(request, interest_id):
+    if request.method == 'POST':
+        interest = get_object_or_404(Interest, id=interest_id)
+        message = request.POST['message']
+        Message.objects.create(interest=interest, sender=request.user, content=message)
+        return redirect('chat_box', interest_id=interest.id)
     
+# views.py
+@login_required
+def send_message(request, interest_id):
+    interest = get_object_or_404(Interest, id=interest_id)
+    if request.method == 'POST':
+        text = request.POST.get('text')  # Ensure 'text' matches the Message model field name
+        if text:
+            message = Message(interest=interest, sender=request.user, text=text)
+            message.save()
+            return redirect('chat_box', interest_id=interest.id)
+    return render(request, 'D:\\chat_app\\social_chat\\myapp\templates\\myapp\\chatbox.html', {'interest': interest})
+
+
+def home(request):
+    user = request.user
+    if user.is_authenticated:
+        messages.success(request, f'Welcome Back {user.username}!')
     return render(request, 'myapp/home.html')
 
 @csrf_exempt
