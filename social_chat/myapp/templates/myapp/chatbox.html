@@ -1,20 +1,43 @@
-<!-- chatbox.html -->
-{% extends 'D:\\chat_app\\social_chat\\myapp\\templates\\myapp\\base.html' %}
+{% extends 'myapp/base.html' %}
 
 {% block title %}Chat{% endblock %}
 
 {% block content %}
-<h1>Chat with {{ recipient.username }}</h1>
+<h1>Chat with {% if request.user == interest.sender %}{{ interest.recipient.username }}{% else %}{{ interest.sender.username }}{% endif %}</h1>
 
 <div id="messages">
     {% for message in interest.messages.all %}
-        <p><strong>{{ message.sender.username }}:</strong> {{ message.text }} <em>{{ message.timestamp }}</em></p>
+        <p><strong>{{ message.sender.username }}:</strong> {{ message.text }} <em>{{ message.timestamp|date:"H:i:s" }}</em></p>
     {% endfor %}
 </div>
 
-<form method="post" action="{% url 'send_message' interest.id %}">
+<form id="chat-form">
     {% csrf_token %}
-    <textarea name="text" rows="4" cols="50"></textarea><br>
-    <button type="submit">Send</button>
+    <textarea id="chat-message-input" name="text" rows="4" cols="50"></textarea><br>
+    <button type="submit" id="chat-message-submit">Send</button>
 </form>
+
+<script>
+    const interestId = {{ interest.id }};
+    const chatSocket = new WebSocket(
+        'ws://' + window.location.host + '/ws/chat/' + interestId + '/'
+    );
+
+    chatSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        const messageElement = document.createElement('p');
+        messageElement.innerHTML = '<strong>' + data.username + ':</strong> ' + data.message;
+        document.querySelector('#messages').appendChild(messageElement);
+    };
+
+    document.querySelector('#chat-form').onsubmit = function(e) {
+        const messageInputDom = document.querySelector('#chat-message-input');
+        const message = messageInputDom.value;
+        chatSocket.send(JSON.stringify({
+            'message': message
+        }));
+        messageInputDom.value = '';
+        e.preventDefault();
+    };
+</script>
 {% endblock %}
