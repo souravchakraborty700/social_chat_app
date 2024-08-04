@@ -23,4 +23,6 @@ urlpatterns = [
     path('chat_box/<int:interest_id>/', views.chat_box, name='chat_box'),
     path('send_message/<int:interest_id>/', views.send_message, name='send_message'),
     path('connect/', views.connect, name='connect'),
+    path('api/user/', views.api_user, name='api_user'),
+    path('api/check-auth/', views.check_auth, name='check_auth'),
 ]

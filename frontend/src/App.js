@@ -5,26 +5,31 @@ import Home from './components/Home';
 import UserList from './components/UserList';
 import ReceivedInterests from './components/ReceivedInterests';
 import Connect from './components/Connect';
-import Chat from './components/Chat';
 import Login from './components/Login';
 import Register from './components/Register';
 import Logout from './components/Logout';
+import ProtectedRoute from './components/ProtectedRoute';
+import { AuthProvider } from './context/AuthContext';
 
 const App = () => {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/users" element={<UserList />} />
-        <Route path="/received-interests" element={<ReceivedInterests />} />
-        <Route path="/connect" element={<Connect />} />
-        <Route path="/chat/:interestId" element={<Chat />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/logout" element={<Logout />} />
-      </Routes>
-    </Router>
-  );
+    return (
+        <AuthProvider>
+            <Router>
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
+                    
+                    <Route element={<ProtectedRoute />}>
+                        <Route path="/users" element={<UserList />} />
+                        <Route path="/received-interests" element={<ReceivedInterests />} />
+                        <Route path="/connect" element={<Connect />} />
+                        <Route path="/logout" element={<Logout />} />
+                    </Route>
+                </Routes>
+            </Router>
+        </AuthProvider>
+    );
 };
 
 export default App;

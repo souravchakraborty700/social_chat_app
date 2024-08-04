@@ -236,3 +236,18 @@ def api_logout(request):
     if request.method == 'POST':
         logout(request)
         return JsonResponse({'message': 'Logout successful'})
+    
+# views.py
+@login_required
+def api_user(request):
+    user = {
+        'id': request.user.id,
+        'username': request.user.username
+    }
+    return JsonResponse(user)
+
+
+@login_required
+def check_auth(request):
+    return JsonResponse({'user': request.user.username})
+

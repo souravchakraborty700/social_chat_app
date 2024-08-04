@@ -2,9 +2,15 @@
 * text=auto
 
 # Explicitly declare text files you want to always be normalized and converted to native line endings on checkout.
-*.html text
-*.css text
-*.js text
-*.jsx text
-*.json text
-*.py text
+*.html text eol=lf
+*.css text eol=lf
+*.js text eol=lf
+*.jsx text eol=lf
+*.json text eol=lf
+*.py text eol=lf
+
+# Denote all files that are truly binary and should not be modified.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
