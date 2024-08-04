@@ -1,5 +1,4 @@
 from django.urls import path, include
-
 from . import views
 
 urlpatterns = [
@@ -14,4 +13,5 @@ urlpatterns = [
     path('reject_interest/<int:interest_id>/', views.reject_interest, name='reject_interest'),
     path('chat_box/<int:interest_id>/', views.chat_box, name='chat_box'),
     path('send_message/<int:interest_id>/', views.send_message, name='send_message'),
+    path('connect/', views.connect, name='connect'),
 ]

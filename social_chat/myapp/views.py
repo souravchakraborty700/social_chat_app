@@ -8,10 +8,22 @@ from django.contrib.auth.models import User
 from .models import Interest, Message
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
+from django.db.models import Q
 
+
+@login_required
 def user_list(request):
     users = User.objects.exclude(id=request.user.id)
-    return render(request, 'D:\\chat_app\\social_chat\\myapp\\templates\\myapp\\user_list.html', {'users': users})
+    contacts = []
+    for user in users:
+        is_contact = Interest.objects.filter(
+            (Q(sender=request.user) & Q(recipient=user)) |
+            (Q(sender=user) & Q(recipient=request.user)),
+            accepted=True
+        ).exists()
+        contacts.append((user, is_contact))
+
+    return render(request, 'myapp/user_list.html', {'contacts': contacts})
 
 @login_required
 def send_interest(request, user_id):
@@ -49,13 +61,18 @@ def accept_interest(request, interest_id):
     messages.success(request, 'Interest accepted')
     return redirect('chat_box', interest_id=interest.id)
 
+# views.py
 @login_required
 def chat_box(request, interest_id):
     interest = get_object_or_404(Interest, id=interest_id, accepted=True)
     if request.user not in [interest.sender, interest.recipient]:
-        print("lets see interest.sender, interest.recipeint", interest.sender, interest.recipient)
         return redirect('received_interests')
-    return render(request, 'D:\\chat_app\\social_chat\\myapp\\templates\\myapp\\chatbox.html', {'interest': interest, 'user': request.user})
+    
+    # Mark messages as read
+    interest.messages.filter(sender=interest.sender if interest.recipient == request.user else interest.recipient).update(read=True)
+    
+    return render(request, 'myapp/chatbox.html', {'interest': interest, 'user': request.user})
+
     
 
 @login_required
@@ -138,13 +155,14 @@ def user_logout(request):
 @login_required
 def connect(request):
     accepted_interests = Interest.objects.filter(
-        (Q(sender=request.user) | Q(recipient=request.user)) & Q(accepted=True)
-    )
+        Q(sender=request.user) | Q(recipient=request.user),
+        accepted=True
+    ).distinct()
 
     contacts = []
     for interest in accepted_interests:
         contact = interest.recipient if interest.sender == request.user else interest.sender
-        has_new_messages = interest.has_new_messages(contact)
+        has_new_messages = interest.messages.filter(read=False).exclude(sender=request.user).exists()
         contacts.append({
             'contact': contact,
             'interest_id': interest.id,
@@ -152,3 +170,4 @@ def connect(request):
         })
 
     return render(request, 'myapp/connect.html', {'contacts': contacts})
+

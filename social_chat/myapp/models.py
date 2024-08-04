@@ -8,13 +8,10 @@ class Interest(models.Model):
     message = models.TextField()
     accepted = models.BooleanField(default=False)
     rejected = models.BooleanField(default=False)
-    sender_notified = models.BooleanField(default=False)  # New field
+    sender_notified = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.sender} -> {self.recipient}"
-
-    def has_new_messages(self, user):
-        return self.messages.filter(sender=user, read=False).exists()
 
 class Message(models.Model):
     interest = models.ForeignKey(Interest, on_delete=models.CASCADE, related_name='messages')
