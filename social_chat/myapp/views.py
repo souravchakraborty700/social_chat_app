@@ -6,6 +6,8 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from .models import Interest, Message
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 
 def user_list(request):
     users = User.objects.exclude(id=request.user.id)
@@ -32,6 +34,18 @@ def accept_interest(request, interest_id):
     interest = get_object_or_404(Interest, id=interest_id, recipient=request.user)
     interest.accepted = True
     interest.save()
+
+    # Notify the sender
+    channel_layer = get_channel_layer()
+    async_to_sync(channel_layer.group_send)(
+        f'notifications_{interest.sender.id}',
+        {
+            'type': 'send_notification',
+            'notification': f'{request.user.username} accepted your interest. Click here to chat.',
+            'interest_id': interest.id,
+        }
+    )
+
     messages.success(request, 'Interest accepted')
     return redirect('chat_box', interest_id=interest.id)
 
@@ -120,3 +134,21 @@ def user_logout(request):
     logout(request)
     messages.success(request, 'You have been logged out.')
     return redirect('login')
+
+@login_required
+def connect(request):
+    accepted_interests = Interest.objects.filter(
+        (Q(sender=request.user) | Q(recipient=request.user)) & Q(accepted=True)
+    )
+
+    contacts = []
+    for interest in accepted_interests:
+        contact = interest.recipient if interest.sender == request.user else interest.sender
+        has_new_messages = interest.has_new_messages(contact)
+        contacts.append({
+            'contact': contact,
+            'interest_id': interest.id,
+            'has_new_messages': has_new_messages,
+        })
+
+    return render(request, 'myapp/connect.html', {'contacts': contacts})

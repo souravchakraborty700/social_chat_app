@@ -38,3 +38,25 @@
     </footer>
 </body>
 </html>
+<!-- Add this to your base.html or a relevant template -->
+<!-- Add this to your base.html or a relevant template -->
+<script>
+    const notificationSocket = new WebSocket(
+        'ws://' + window.location.host + '/ws/notifications/'
+    );
+
+    notificationSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        alert(data.notification);  // Show notification
+        // Optionally, redirect to chat
+        if (data.notification.includes('accepted your interest')) {
+            const interestId = data.interest_id;
+            window.location.href = '/myapp/chat_box/' + interestId + '/';
+        }
+    };
+
+    notificationSocket.onclose = function(e) {
+        console.error('Notification socket closed unexpectedly');
+    };
+</script>
+
