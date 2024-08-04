@@ -9,7 +9,12 @@ from .models import Interest, Message
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from django.db.models import Q
+from django.http import JsonResponse
+from django.db import models
+import json
 
+def index(request):
+    return render(request, 'myapp/index.html')
 
 @login_required
 def user_list(request):
@@ -171,3 +176,61 @@ def connect(request):
 
     return render(request, 'myapp/connect.html', {'contacts': contacts})
 
+@login_required
+def api_user_list(request):
+    users = User.objects.exclude(id=request.user.id).values('id', 'username')
+    return JsonResponse(list(users), safe=False)
+
+@login_required
+def api_received_interests(request):
+    interests = Interest.objects.filter(recipient=request.user, accepted=False, rejected=False).values('id', 'sender__username', 'message')
+    return JsonResponse(list(interests), safe=False)
+
+@login_required
+def api_accept_interest(request, interest_id):
+    interest = get_object_or_404(Interest, id=interest_id, recipient=request.user)
+    interest.accepted = True
+    interest.save()
+    return JsonResponse({'status': 'accepted'})
+
+@login_required
+def api_reject_interest(request, interest_id):
+    interest = get_object_or_404(Interest, id=interest_id, recipient=request.user)
+    interest.rejected = True
+    interest.save()
+    return JsonResponse({'status': 'rejected'})
+
+@login_required
+def api_connect(request):
+    contacts = Interest.objects.filter(accepted=True).filter(models.Q(sender=request.user) | models.Q(recipient=request.user)).values('id', 'sender__username', 'recipient__username')
+    return JsonResponse(list(contacts), safe=False)
+
+
+@csrf_exempt
+def api_login(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        username = data.get('username')
+        password = data.get('password')
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return JsonResponse({'message': 'Login successful'})
+        else:
+            return JsonResponse({'error': 'Invalid credentials'}, status=400)
+        
+@csrf_exempt
+def api_register(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        username = data.get('username')
+        password = data.get('password')
+        if User.objects.filter(username=username).exists():
+            return JsonResponse({'error': 'Username already taken'}, status=400)
+        else:
+            user = User.objects.create_user(username=username, password=password)
+            return JsonResponse({'message': 'User registered successfully'})
+
+def api_logout(request):
+    logout(request)
+    return JsonResponse({'message': 'Logout successful'})
