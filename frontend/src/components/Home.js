@@ -11,6 +11,7 @@ const Home = () => {
                     <li><Link to="/users">User List</Link></li>
                     <li><Link to="/received-interests">Received Interests</Link></li>
                     <li><Link to="/connect">Connect</Link></li>
+                    <li><Link to="/logout">Logout</Link></li>
                 </ul>
             </nav>
         </div>

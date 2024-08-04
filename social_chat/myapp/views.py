@@ -231,6 +231,8 @@ def api_register(request):
             user = User.objects.create_user(username=username, password=password)
             return JsonResponse({'message': 'User registered successfully'})
 
+@csrf_exempt
 def api_logout(request):
-    logout(request)
-    return JsonResponse({'message': 'Logout successful'})
+    if request.method == 'POST':
+        logout(request)
+        return JsonResponse({'message': 'Logout successful'})
