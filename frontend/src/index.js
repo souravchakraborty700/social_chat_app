@@ -1,8 +1,9 @@
+// src/index.js
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
+import ReactDOM from 'react-dom/client'; // Make sure this is imported only once
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import './styles.css'; // Import the CSS file
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

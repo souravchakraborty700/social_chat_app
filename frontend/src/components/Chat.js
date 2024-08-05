@@ -60,9 +60,9 @@ const Chat = () => {
     };
 
     return (
-        <div>
+        <div className="container">
             <h1>Chat</h1>
-            <div>
+            <div className="chat-box">
                 {messages.map((message, index) => (
                     <div key={index}>
                         <strong>{message.username}:</strong> {message.text}

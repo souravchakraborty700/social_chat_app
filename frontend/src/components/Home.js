@@ -2,6 +2,7 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import Header from './Header';
 
 const Home = () => {
   const { user, loading } = useContext(AuthContext);
@@ -11,25 +12,27 @@ const Home = () => {
   }
 
   return (
-    <div>
-      <h1>Home</h1>
-      <nav>
-        <ul>
-          {user ? (
-            <>
-              <li><Link to="/users">User List</Link></li>
-              <li><Link to="/received-interests">Received Interests</Link></li>
-              <li><Link to="/connect">Connect</Link></li>
-              <li><Link to="/logout">Logout</Link></li>
-            </>
-          ) : (
-            <>
+    <div className="home-container">
+      {user ? (
+        <>
+          <Header />
+          <div className="welcome">
+            <h1>Welcome to Social Chat</h1>
+            <p>Explore and connect with friends</p>
+          </div>
+        </>
+      ) : (
+        <>
+          <h1>Social Chat</h1>
+          <h2>Let's connect...</h2>
+          <nav>
+            <ul>
               <li><Link to="/login">Login</Link></li>
               <li><Link to="/register">Register</Link></li>
-            </>
-          )}
-        </ul>
-      </nav>
+            </ul>
+          </nav>
+        </>
+      )}
     </div>
   );
 };
