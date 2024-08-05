@@ -178,8 +178,26 @@ def connect(request):
 
 @login_required
 def api_user_list(request):
-    users = User.objects.exclude(id=request.user.id).values('id', 'username')
-    return JsonResponse(list(users), safe=False)
+    users = User.objects.exclude(id=request.user.id)
+    user_data = []
+
+    for user in users:
+        sent_interest = Interest.objects.filter(sender=request.user, recipient=user).first()
+        received_interest = Interest.objects.filter(sender=user, recipient=request.user).first()
+        
+        if sent_interest and sent_interest.accepted:
+            status = 'contact'
+        elif received_interest and received_interest.accepted:
+            status = 'contact'
+        elif sent_interest:
+            status = 'sent'
+        else:
+            status = 'none'
+        
+        user_data.append({'id': user.id, 'username': user.username, 'status': status})
+
+    return JsonResponse(user_data, safe=False)
+
 
 @login_required
 def api_received_interests(request):
@@ -191,7 +209,7 @@ def api_accept_interest(request, interest_id):
     interest = get_object_or_404(Interest, id=interest_id, recipient=request.user)
     interest.accepted = True
     interest.save()
-    return JsonResponse({'status': 'accepted'})
+    return JsonResponse({'status': 'accepted', 'interest_id': interest.id})
 
 @login_required
 def api_reject_interest(request, interest_id):
@@ -202,8 +220,23 @@ def api_reject_interest(request, interest_id):
 
 @login_required
 def api_connect(request):
-    contacts = Interest.objects.filter(accepted=True).filter(models.Q(sender=request.user) | models.Q(recipient=request.user)).values('id', 'sender__username', 'recipient__username')
-    return JsonResponse(list(contacts), safe=False)
+    interests = Interest.objects.filter(
+        Q(sender=request.user) | Q(recipient=request.user),
+        accepted=True
+    ).distinct()
+
+    contacts = []
+    for interest in interests:
+        contact = interest.recipient if interest.sender == request.user else interest.sender
+        has_new_messages = interest.messages.filter(read=False).exclude(sender=request.user).exists()
+        contacts.append({
+            'contact': {'username': contact.username},
+            'interest_id': interest.id,
+            'has_new_messages': has_new_messages,
+        })
+
+    return JsonResponse(contacts, safe=False)
+
 
 
 @csrf_exempt
@@ -251,3 +284,29 @@ def api_user(request):
 def check_auth(request):
     return JsonResponse({'user': request.user.username})
 
+@login_required
+def api_messages(request, interest_id):
+    interest = get_object_or_404(Interest, id=interest_id)
+    messages = Message.objects.filter(interest=interest).values('sender__username', 'text', 'timestamp')
+    formatted_messages = [{'username': message['sender__username'], 'text': message['text'], 'timestamp': message['timestamp']} for message in messages]
+    return JsonResponse(formatted_messages, safe=False)
+
+@csrf_exempt
+@login_required
+def api_send_message(request, interest_id):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        text = data.get('message')
+        interest = get_object_or_404(Interest, id=interest_id)
+        message = Message.objects.create(interest=interest, sender=request.user, text=text)
+        return JsonResponse({'status': 'Message sent'})
+
+@csrf_exempt
+@login_required
+def api_send_interest(request, user_id):
+    if request.method == 'POST':
+        recipient = get_object_or_404(User, id=user_id)
+        interest = Interest(sender=request.user, recipient=recipient, message='Interest sent')
+        interest.save()
+        return JsonResponse({'status': 'Interest sent'})
+    return JsonResponse({'error': 'Invalid request'}, status=400)

@@ -12,6 +12,12 @@ urlpatterns = [
     path('api/login/', views.api_login, name='api_login'),
     path('api/register/', views.api_register, name='api_register'),
     path('api/logout/', views.api_logout, name='api_logout'),
+    path('api/user/', views.api_user, name='api_user'),
+    path('api/check-auth/', views.check_auth, name='check_auth'),
+    path('api/send-interest/<int:user_id>/', views.api_send_interest, name='api_send_interest'),
+    path('api/messages/<int:interest_id>/', views.api_messages, name='api_messages'),
+    path('api/send-message/<int:interest_id>/', views.api_send_message, name='api_send_message'),
+    path('api/user-list/', views.api_user_list, name='api_user_list'),
     path('register/', views.register, name="register"),
     path('login/', views.user_login, name='login'),
     path('logout/', views.user_logout, name='logout'),
@@ -23,6 +29,5 @@ urlpatterns = [
     path('chat_box/<int:interest_id>/', views.chat_box, name='chat_box'),
     path('send_message/<int:interest_id>/', views.send_message, name='send_message'),
     path('connect/', views.connect, name='connect'),
-    path('api/user/', views.api_user, name='api_user'),
-    path('api/check-auth/', views.check_auth, name='check_auth'),
+    
 ]
