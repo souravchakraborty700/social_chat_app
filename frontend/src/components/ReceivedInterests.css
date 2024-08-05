@@ -1,4 +1,4 @@
-/* src/components/Connect.css */
+/* src/components/ReceivedInterests.css */
 
 body, html {
     height: 100%;
@@ -55,26 +55,20 @@ li span {
     text-align: left; /* Align text to the left */
 }
 
-li .chat-button {
+li button {
     flex: 1; /* Ensure the button takes the available space */
     margin-left: 1rem; /* Add space between elements */
-    text-decoration: none;
-    color: white;
     padding: 0.5rem 1rem;
+    background-color: #007BFF;
+    color: white;
+    border: none;
     border-radius: 5px;
-    background-color: #28a745; /* Green background color */
+    cursor: pointer;
     transition: background-color 0.3s, color 0.3s;
 }
 
-li .chat-button:hover {
-    background-color: #218838; /* Darker green for hover */
-}
-
-.new-messages {
-    color: red;
-    font-weight: bold;
-    font-size: 1.2rem; /* Ensure it matches the username font size */
-    margin-left: 1rem;
+li button:hover {
+    background-color: #0056b3;
 }
 
 /* Mobile responsiveness */
@@ -95,12 +89,8 @@ li .chat-button:hover {
         flex-direction: column;
     }
 
-    .chat-button {
+    button {
         width: 100%;
-        margin-left: 0;
-    }
-
-    .new-messages {
         margin-left: 0;
     }
 }

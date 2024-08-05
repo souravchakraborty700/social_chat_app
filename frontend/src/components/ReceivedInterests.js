@@ -1,7 +1,10 @@
+// src/components/ReceivedInterests.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { getCsrfToken } from '../utils/csrfToken';
+import Header from './Header';
+import './ReceivedInterests.css';
 
 const ReceivedInterests = () => {
     const [interests, setInterests] = useState([]);
@@ -35,17 +38,22 @@ const ReceivedInterests = () => {
     };
 
     return (
-        <div>
-            <h1>Received Interests</h1>
-            <ul>
-                {interests.map(interest => (
-                    <li key={interest.id}>
-                        {interest.sender__username}: {interest.message}
-                        <button onClick={() => acceptInterest(interest.id)}>Accept Request</button>
-                    </li>
-                ))}
-            </ul>
-        </div>
+        <>
+            <Header />
+            <div className="container">
+                
+                <ul>
+                    {interests.map(interest => (
+                        <li key={interest.id}>
+                            <div>
+                                <span>{interest.sender__username}: {interest.message}</span>
+                                <button onClick={() => acceptInterest(interest.id)}>Accept Request</button>
+                            </div>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        </>
     );
 };
 

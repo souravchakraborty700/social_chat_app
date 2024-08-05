@@ -1,13 +1,17 @@
 // src/components/Chat.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { AuthContext } from '../context/AuthContext';
+import Header from './Header';
+import './Chat.css';
 
 const Chat = () => {
     const { interestId } = useParams();
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
     const [chatSocket, setChatSocket] = useState(null);
+    const { user } = useContext(AuthContext);
 
     useEffect(() => {
         fetchMessages();
@@ -42,14 +46,15 @@ const Chat = () => {
 
     const fetchMessages = () => {
         axios.get(`http://localhost:8000/myapp/api/messages/${interestId}/`, { withCredentials: true })
-            .then(response => setMessages(response.data))
+            .then(response => {
+                setMessages(response.data);
+            })
             .catch(error => console.error('Error fetching messages:', error));
     };
 
     const sendMessage = (e) => {
         e.preventDefault();
         if (chatSocket && chatSocket.readyState === WebSocket.OPEN) {
-            console.log('Sending message:', newMessage);
             chatSocket.send(JSON.stringify({
                 'message': newMessage
             }));
@@ -60,25 +65,28 @@ const Chat = () => {
     };
 
     return (
-        <div className="container">
-            <h1>Chat</h1>
-            <div className="chat-box">
-                {messages.map((message, index) => (
-                    <div key={index}>
-                        <strong>{message.username}:</strong> {message.text}
-                    </div>
-                ))}
+        <>
+            <Header />
+            <div className="container">
+                <h1>Chat</h1>
+                <div className="chat-box">
+                    {messages.map((message, index) => (
+                        <div key={index} className="message">
+                            <strong>{message.username === user?.username ? 'You' : message.username}:</strong> {message.text}
+                        </div>
+                    ))}
+                </div>
+                <form onSubmit={sendMessage} className="chat-form">
+                    <input
+                        type="text"
+                        value={newMessage}
+                        onChange={(e) => setNewMessage(e.target.value)}
+                        placeholder="Type your message here"
+                    />
+                    <button type="submit">Send</button>
+                </form>
             </div>
-            <form onSubmit={sendMessage}>
-                <input
-                    type="text"
-                    value={newMessage}
-                    onChange={(e) => setNewMessage(e.target.value)}
-                    placeholder="Type your message here"
-                />
-                <button type="submit">Send</button>
-            </form>
-        </div>
+        </>
     );
 };
 

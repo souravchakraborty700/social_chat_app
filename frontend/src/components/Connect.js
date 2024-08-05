@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Header from './Header';
-import './Connect.css'; // Ensure this path matches the file location
+import './Connect.css';
 
 const Connect = () => {
     const [contacts, setContacts] = useState([]);
@@ -40,15 +40,17 @@ const Connect = () => {
             <Header />
             <div className="container">
                 
-                <div className="contact-list">
+                <ul>
                     {contacts.map(contact => (
-                        <div key={contact.interest_id} className="contact-item">
-                            <span>{contact.contact.username}</span>
-                            <Link to={`/chat/${contact.interest_id}`} className="chat-button">Chat</Link>
-                            {contact.has_new_messages && <span className="new-messages"> (new messages)</span>}
-                        </div>
+                        <li key={contact.interest_id}>
+                            <div>
+                                <span>{contact.contact.username}</span>
+                                <Link to={`/chat/${contact.interest_id}`} className="chat-button">Chat</Link>
+                                {contact.has_new_messages && <span className="new-messages"> (new messages)</span>}
+                            </div>
+                        </li>
                     ))}
-                </div>
+                </ul>
             </div>
         </>
     );

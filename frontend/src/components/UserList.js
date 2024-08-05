@@ -1,6 +1,9 @@
+// src/components/UserList.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { getCsrfToken } from '../utils/csrfToken';
+import Header from './Header';
+import './UserList.css';
 
 const UserList = () => {
     const [users, setUsers] = useState([]);
@@ -41,32 +44,39 @@ const UserList = () => {
     };
 
     return (
-        <div className="container">
-            <h1>User List</h1>
-            <ul>
-                {users.map(user => (
-                    <li key={user.id}>
-                        {user.username} 
-                        {user.status === 'contact' ? 'Contact' : (
-                            user.status === 'sent' ? 'Request Sent' : (
-                                selectedUser === user.id ? (
-                                    <div>
-                                        <textarea
-                                            value={message}
-                                            onChange={(e) => setMessage(e.target.value)}
-                                            placeholder="Write your message here"
-                                        />
-                                        <button onClick={() => sendInterest(user.id)}>Send</button>
-                                    </div>
+        <>
+            <Header />
+            <div className="container">
+                
+                <ul>
+                    {users.map(user => (
+                        <li key={user.id}>
+                            <div>
+                                <span>{user.username}</span>
+                                {user.status === 'contact' ? (
+                                    <button className="status-button">Contact</button>
+                                ) : user.status === 'sent' ? (
+                                    <button className="status-button">Request Sent</button>
                                 ) : (
-                                    <button onClick={() => openMessageBox(user.id)}>Send Interest</button>
-                                )
-                            )
-                        )}
-                    </li>
-                ))}
-            </ul>
-        </div>
+                                    selectedUser === user.id ? (
+                                        <div>
+                                            <textarea
+                                                value={message}
+                                                onChange={(e) => setMessage(e.target.value)}
+                                                placeholder="Write your message here"
+                                            />
+                                            <button onClick={() => sendInterest(user.id)}>Send</button>
+                                        </div>
+                                    ) : (
+                                        <button onClick={() => openMessageBox(user.id)}>Send Interest</button>
+                                    )
+                                )}
+                            </div>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        </>
     );
 };
 
