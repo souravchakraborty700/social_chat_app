@@ -13,7 +13,10 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 from django.contrib.messages import constants as message_constants
 import os
+import dj_database_url
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -26,7 +29,7 @@ SECRET_KEY = 'django-insecure-h2y-hk5iz6==gvc^z6+j(#z-93az$ftign$)6y#$%vlj$ksxff
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['sourav-social-chat.herokuapp.com']
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
@@ -35,13 +38,13 @@ CORS_ALLOWED_ORIGINS = [
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'daphne',
     'channels',
     'myapp',
     'corsheaders',
@@ -85,12 +88,27 @@ ASGI_APPLICATION = 'social_chat.asgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default='sqlite:///db.sqlite3'  # Local development default
+#     )
+# }
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.parse(
+        'postgres://u7dga2401pomcj:p811af66b1dca0f0b498fc94d1ff8497313ee2aa5e83d6ca82461d6a00afa3eee@c9mq4861d16jlm.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com:5432/d716ia9ftm0ta5'
+    )
 }
+# DATABASES = {
+#     'default': dj_database_url.config(default='postgres://localhost')
+# }
 
 
 # Password validation
@@ -128,11 +146,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# To serve react build
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'frontend', 'build', 'static'),
+    os.path.join(BASE_DIR, 'frontend_build', 'static'),
 ]
 
 # Default primary key field type
@@ -153,14 +170,17 @@ MESSAGE_TAGS = {
     message_constants.ERROR: 'error',
 }
 
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            "hosts": [('10.180.146.181', 6379)],  # Redis server
-        },
-    },
-}
+# CHANNEL_LAYERS = {
+#     'default': {
+#         'BACKEND': 'channels_redis.core.RedisChannelLayer',
+#         'CONFIG': {
+#             "hosts": [('127.0.0.1', 6379)],  # Local Redis server
+#         },
+#     },
+# }
+
+REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379')
+
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",

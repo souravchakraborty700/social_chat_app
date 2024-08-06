@@ -12,6 +12,8 @@ from django.db.models import Q
 from django.http import JsonResponse
 from django.db import models
 import json
+# views.py in your Django app
+from django.views.generic import TemplateView
 
 def index(request):
     return render(request, 'myapp/index.html')
@@ -314,3 +316,8 @@ def api_send_interest(request, user_id):
 @login_required
 def api_check_auth(request):
     return JsonResponse({'user': {'id': request.user.id, 'username': request.user.username}})
+
+
+# To server the react app
+class IndexView(TemplateView):
+    template_name = 'frontend/build/index.html'

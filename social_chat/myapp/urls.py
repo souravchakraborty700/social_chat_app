@@ -1,5 +1,6 @@
-from django.urls import path
+from django.urls import path, re_path
 from . import views
+from .views import IndexView
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -30,5 +31,6 @@ urlpatterns = [
     path('chat_box/<int:interest_id>/', views.chat_box, name='chat_box'),
     path('send_message/<int:interest_id>/', views.send_message, name='send_message'),
     path('connect/', views.connect, name='connect'),
+    re_path(r'^.*$', IndexView.as_view(), name='index'),
     
 ]
