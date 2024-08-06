@@ -1,0 +1,11 @@
+# app.yaml
+runtime: python39
+
+handlers:
+- url: /static
+  static_dir: staticfiles
+
+- url: /.*
+  script: auto
+
+entrypoint: python -m daphne -b :$PORT social_chat.asgi:application

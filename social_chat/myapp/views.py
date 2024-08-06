@@ -39,12 +39,12 @@ def send_interest(request, user_id):
         interest.save()
         messages.success(request, f'Interest sent to {recipient.username}')
         return redirect('user_list')
-    return render(request, 'D:\\chat_app\\social_chat\\myapp\\templates\\myapp\\send_interest.html', {'recipient': recipient})
+    return render(request, 'myapp/send_interest.html', {'recipient': recipient})
 
 @login_required
 def received_interests(request):
     interests = request.user.received_interests.filter(accepted=False, rejected=False)
-    return render(request, 'D:\\chat_app\\social_chat\\myapp\\templates\\myapp\\received_interests.html', {'interests': interests})
+    return render(request, 'myapp/received_interests.html', {'interests': interests})
 
 @login_required
 def accept_interest(request, interest_id):
@@ -106,7 +106,7 @@ def send_message(request, interest_id):
             message = Message(interest=interest, sender=request.user, text=text)
             message.save()
             return redirect('chat_box', interest_id=interest.id)
-    return render(request, 'D:\\chat_app\\social_chat\\myapp\templates\\myapp\\chatbox.html', {'interest': interest})
+    return render(request, 'myapp/chatbox.html', {'interest': interest})
 
 
 def home(request):
