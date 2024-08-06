@@ -310,3 +310,7 @@ def api_send_interest(request, user_id):
         interest.save()
         return JsonResponse({'status': 'Interest sent'})
     return JsonResponse({'error': 'Invalid request'}, status=400)
+
+@login_required
+def api_check_auth(request):
+    return JsonResponse({'user': {'id': request.user.id, 'username': request.user.username}})
