@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-h2y-hk5iz6==gvc^z6+j(#z-93az$ftign$)6y#$%vlj$ksxff
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['sourav-chat-app-46797b9cb3a7.herokuapp.com', '*']
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
@@ -36,13 +36,13 @@ CORS_ALLOWED_ORIGINS = [
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'daphne',
+    'django.contrib.staticfiles',    
     'channels',
     'myapp',
     'corsheaders',
