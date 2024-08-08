@@ -17,7 +17,7 @@
     <button type="submit" id="chat-message-submit">Send</button>
 </form>
 
-<script>
+<!-- <script>
     const interestId = {{ interest.id }};
     const chatSocket = new WebSocket(
         'ws://' + window.location.host + '/ws/chat/' + interestId + '/'
@@ -39,5 +39,47 @@
         messageInputDom.value = '';
         e.preventDefault();
     };
+</script> -->
+<script>
+    const interestId = {{ interest.id }};
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const chatSocket = new WebSocket(
+        protocol + '//' + window.location.host + '/ws/chat/' + interestId + '/'
+    );
+
+    chatSocket.onopen = function(e) {
+        console.log('WebSocket connection opened:', e);
+    };
+
+    chatSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        const messageElement = document.createElement('p');
+        messageElement.innerHTML = '<strong>' + data.username + ':</strong> ' + data.message;
+        document.querySelector('#messages').appendChild(messageElement);
+    };
+
+    chatSocket.onerror = function(e) {
+        console.error('WebSocket error:', e);
+    };
+
+    chatSocket.onclose = function(e) {
+        console.log('WebSocket connection closed:', e);
+    };
+
+    document.querySelector('#chat-form').onsubmit = function(e) {
+        e.preventDefault();  // Prevent the form from submitting
+        const messageInputDom = document.querySelector('#chat-message-input');
+        const message = messageInputDom.value;
+        if (chatSocket.readyState === WebSocket.OPEN) {
+            chatSocket.send(JSON.stringify({
+                'message': message
+            }));
+        } else {
+            console.error('WebSocket is not open. Ready state: ' + chatSocket.readyState);
+        }
+        messageInputDom.value = '';
+    };
 </script>
+
+
 {% endblock %}
