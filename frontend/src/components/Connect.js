@@ -1,4 +1,3 @@
-// src/components/Connect.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
@@ -11,8 +10,9 @@ const Connect = () => {
     useEffect(() => {
         fetchContacts();
 
+        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
         const notificationSocket = new WebSocket(
-            'ws://' + window.location.host + '/ws/notifications/'
+            `${protocol}//${window.location.host}/ws/notifications/`
         );
 
         notificationSocket.onmessage = function(e) {
@@ -30,7 +30,7 @@ const Connect = () => {
     }, []);
 
     const fetchContacts = () => {
-        axios.get('http://localhost:8000/myapp/api/connect/', { withCredentials: true })
+        axios.get(`${process.env.REACT_APP_API_URL}/myapp/api/connect/`, { withCredentials: true })
             .then(response => setContacts(response.data))
             .catch(error => console.error('Error fetching contacts:', error));
     };
@@ -39,7 +39,6 @@ const Connect = () => {
         <>
             <Header />
             <div className="container">
-                
                 <ul>
                     {contacts.map(contact => (
                         <li key={contact.interest_id}>

@@ -11,7 +11,7 @@ const UserList = () => {
     const [message, setMessage] = useState('');
 
     useEffect(() => {
-        axios.get('http://localhost:8000/myapp/api/users/', { withCredentials: true })
+        axios.get('${process.env.REACT_APP_API_URL}/myapp/api/users/', { withCredentials: true })
             .then(response => {
                 setUsers(response.data);
             })
@@ -21,7 +21,7 @@ const UserList = () => {
     }, []);
 
     const sendInterest = (userId) => {
-        axios.post(`http://localhost:8000/myapp/api/send-interest/${userId}/`, { message }, {
+        axios.post(`${process.env.REACT_APP_API_URL}/myapp/api/send-interest/${userId}/`, { message }, {
             withCredentials: true,
             headers: {
                 'X-CSRFToken': getCsrfToken()

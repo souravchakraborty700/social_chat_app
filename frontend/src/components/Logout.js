@@ -7,7 +7,7 @@ const Logout = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.post('http://localhost:8000/myapp/api/logout/', {}, { withCredentials: true })
+        axios.post('${process.env.REACT_APP_API_URL}/myapp/api/logout/', {}, { withCredentials: true })
             .then(response => {
                 navigate('/login');
             })

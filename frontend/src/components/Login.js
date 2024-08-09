@@ -12,7 +12,7 @@ const Login = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    axios.post('http://localhost:8000/myapp/api/login/', { username, password }, { withCredentials: true })
+    axios.post(`${process.env.REACT_APP_API_URL}/myapp/api/login/`, { username, password }, { withCredentials: true })
       .then(response => {
         if (response.data.message === 'Login successful') {
           login(response.data.user); // Update the user in context

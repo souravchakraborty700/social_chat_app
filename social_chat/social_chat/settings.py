@@ -166,9 +166,12 @@ CHANNEL_LAYERS = {
 }
 
 CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:3000",
+    'https://sourav-social-chat-app-62eb0b733f26.herokuapp.com',
 ]
 
 CORS_ALLOW_CREDENTIALS = True
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
