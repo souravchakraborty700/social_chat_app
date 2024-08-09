@@ -30,7 +30,7 @@ const Connect = () => {
     }, []);
 
     const fetchContacts = () => {
-        axios.get(`${process.env.REACT_APP_API_URL}/myapp/api/connect/`, { withCredentials: true })
+        axios.get(`https://sourav-social-chat-app-62eb0b733f26.herokuapp.com/myapp/api/connect/`, { withCredentials: true })
             .then(response => setContacts(response.data))
             .catch(error => console.error('Error fetching contacts:', error));
     };

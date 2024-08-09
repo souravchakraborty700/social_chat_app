@@ -143,7 +143,7 @@ const Chat = () => {
     }, [interestId]);
 
     const fetchMessages = () => {
-        axios.get(`${process.env.REACT_APP_API_URL}/myapp/api/messages/${interestId}/`, { withCredentials: true })
+        axios.get(`https://sourav-social-chat-app-62eb0b733f26.herokuapp.com/myapp/api/messages/${interestId}/`, { withCredentials: true })
             .then(response => setMessages(response.data))
             .catch(error => console.error('Error fetching messages:', error));
     };

@@ -11,7 +11,7 @@ const ReceivedInterests = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get('${process.env.REACT_APP_API_URL}/myapp/api/received-interests/', { withCredentials: true })
+        axios.get('https://sourav-social-chat-app-62eb0b733f26.herokuapp.com/myapp/api/received-interests/', { withCredentials: true })
             .then(response => {
                 setInterests(response.data);
             })
@@ -21,7 +21,7 @@ const ReceivedInterests = () => {
     }, []);
 
     const acceptInterest = (interestId) => {
-        axios.post(`${process.env.REACT_APP_API_URL}/myapp/api/accept-interest/${interestId}/`, {}, {
+        axios.post(`https://sourav-social-chat-app-62eb0b733f26.herokuapp.com/myapp/api/accept-interest/${interestId}/`, {}, {
             withCredentials: true,
             headers: {
                 'X-CSRFToken': getCsrfToken()
