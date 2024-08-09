@@ -14,6 +14,7 @@ export const AuthProvider = ({ children }) => {
     const fetchUser = async () => {
         try {
             const response = await axios.get('https://sourav-social-chat-app-62eb0b733f26.herokuapp.com/myapp/api/check-auth/', { withCredentials: true });
+            console.log('Fetched user:', response.data.user);  // Debugging line
             setUser(response.data.user);
         } catch {
             setUser(null);

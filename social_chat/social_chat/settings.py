@@ -168,6 +168,7 @@ CHANNEL_LAYERS = {
 
 CSRF_TRUSTED_ORIGINS = [
     'https://sourav-social-chat-app-62eb0b733f26.herokuapp.com',
+    'https://social-chat-app-psi.vercel.app/'
 ]
 
 CORS_ALLOW_CREDENTIALS = True

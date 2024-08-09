@@ -14,6 +14,7 @@ const Login = () => {
     event.preventDefault();
     axios.post(`https://sourav-social-chat-app-62eb0b733f26.herokuapp.com/myapp/api/login/`, { username, password }, { withCredentials: true })
       .then(response => {
+        console.log('This is for Login.js',response.data);
         if (response.data.message === 'Login successful') {
           login(response.data.user); // Update the user in context
           fetchUser(); // Fetch the user data
