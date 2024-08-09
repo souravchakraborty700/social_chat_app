@@ -171,6 +171,8 @@ CSRF_TRUSTED_ORIGINS = [
     'https://social-chat-app-psi.vercel.app/'
 ]
 
+CORS_ALLOW_ALL_ORIGINS = True
+
 CORS_ALLOW_CREDENTIALS = True
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'

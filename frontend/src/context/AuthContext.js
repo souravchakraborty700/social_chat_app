@@ -15,9 +15,13 @@ export const AuthProvider = ({ children }) => {
     const fetchUser = async () => {
         try {
             const response = await axios.get('https://sourav-social-chat-app-62eb0b733f26.herokuapp.com/myapp/api/check-auth/', { withCredentials: true });
-            console.log('Full response:', response);  // Log the full response for debugging
-            setUser(response.data.user);  // Make sure you're setting the correct part of the response
-            console.log('User state after fetch:', response.data.user);  // Check if the user is set correctly
+            console.log('Full response:', response);  // Log the full response
+            if (response.status === 200 && response.data.user) {
+                setUser(response.data.user);
+                console.log('User state after fetch:', response.data.user);
+            } else {
+                setUser(null);  // Handle cases where user is not authenticated
+            }
         } catch (error) {
             console.error('Error fetching user:', error);
             setUser(null);
@@ -25,6 +29,7 @@ export const AuthProvider = ({ children }) => {
             setLoading(false);
         }
     };
+    
 
     const login = (userData) => {
         setUser(userData);
