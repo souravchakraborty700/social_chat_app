@@ -8,6 +8,7 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        console.log('useEffect triggered - fetching user');
         fetchUser();
     }, []);
 
