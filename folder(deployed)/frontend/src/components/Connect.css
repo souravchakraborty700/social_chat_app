@@ -1,0 +1,106 @@
+/* src/components/Connect.css */
+
+body, html {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center vertically */
+    align-items: center; /* Center horizontally */
+    min-height: 100vh; /* Ensure it takes full height of the viewport */
+    padding: 2rem;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin-top: 5rem; /* Add margin to push content below the nav bar */
+}
+
+h1 {
+    margin-bottom: 2rem; /* Add space below the heading */
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    width: 100%; /* Ensure it takes full width for centering */
+}
+
+li {
+    display: flex;
+    justify-content: space-between; /* Space between items */
+    align-items: center;
+    margin-bottom: 1.5rem; /* Add more space between items */
+    padding: 1rem;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+li div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+li span {
+    flex: 1; /* Ensure the span takes the available space */
+    text-align: left; /* Align text to the left */
+}
+
+li .chat-button {
+    flex: 1; /* Ensure the button takes the available space */
+    margin-left: 1rem; /* Add space between elements */
+    text-decoration: none;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    background-color: #28a745; /* Green background color */
+    transition: background-color 0.3s, color 0.3s;
+}
+
+li .chat-button:hover {
+    background-color: #218838; /* Darker green for hover */
+}
+
+.new-messages {
+    color: red;
+    font-weight: bold;
+    font-size: 1.2rem; /* Ensure it matches the username font size */
+    margin-left: 1rem;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+    .container {
+        padding: 1rem;
+        margin-top: 6rem; /* Increase margin-top for mobile view to account for nav bar */
+    }
+
+    li {
+        flex-direction: column; /* Change to column layout for mobile */
+        align-items: center; /* Center items on mobile */
+        text-align: center;
+        padding: 1rem;
+    }
+
+    li div {
+        flex-direction: column;
+    }
+
+    .chat-button {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .new-messages {
+        margin-left: 0;
+    }
+}

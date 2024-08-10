@@ -113,8 +113,9 @@ const Chat = () => {
     useEffect(() => {
         fetchMessages();
 
+        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
         const socket = new WebSocket(
-            'ws://' + window.location.hostname + ':8000/ws/chat/' + interestId + '/'
+            `${protocol}//${window.location.hostname}/ws/chat/${interestId}/`
         );
 
         socket.onopen = function() {
@@ -142,7 +143,7 @@ const Chat = () => {
     }, [interestId]);
 
     const fetchMessages = () => {
-        axios.get(`http://localhost:8000/myapp/api/messages/${interestId}/`, { withCredentials: true })
+        axios.get(`https://sourav-social-chat-app-62eb0b733f26.herokuapp.com/myapp/api/messages/${interestId}/`, { withCredentials: true })
             .then(response => setMessages(response.data))
             .catch(error => console.error('Error fetching messages:', error));
     };
