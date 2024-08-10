@@ -12,7 +12,7 @@ const Register = () => {
         event.preventDefault();
         const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
-        axios.post('${baseUrl}/myapp/api/register/', { username, password }, { withCredentials: true })
+        axios.post(`${baseUrl}/myapp/api/register/`, { username, password }, { withCredentials: true })
             .then(response => {
                 if (response.data.message === 'User registered successfully') {
                     navigate('/login');

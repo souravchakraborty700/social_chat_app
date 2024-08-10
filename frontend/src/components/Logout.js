@@ -8,7 +8,7 @@ const Logout = () => {
     const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
     useEffect(() => {
-        axios.post('${baseUrl}/myapp/api/logout/', {}, { withCredentials: true })
+        axios.post(`${baseUrl}/myapp/api/logout/`, {}, { withCredentials: true })
             .then(response => {
                 navigate('/login');
             })

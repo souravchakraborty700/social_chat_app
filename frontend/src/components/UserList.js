@@ -13,7 +13,7 @@ const UserList = () => {
 
 
     useEffect(() => {
-        axios.get('${baseUrl}/myapp/api/users/', { withCredentials: true })
+        axios.get(`${baseUrl}/myapp/api/users/`, { withCredentials: true })
             .then(response => {
                 setUsers(response.data);
             })

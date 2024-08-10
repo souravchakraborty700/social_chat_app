@@ -18,8 +18,7 @@ const Login = () => {
     const csrfToken = getCsrfToken();  // Get the CSRF token
     
     const baseUrl = process.env.REACT_APP_API_BASE_URL;
-    
-    axios.post('${baseUrl}/myapp/api/login/', 
+    axios.post(`${baseUrl}/myapp/api/login/`, 
       { username, password }, 
       { 
         withCredentials: true,

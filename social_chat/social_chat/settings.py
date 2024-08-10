@@ -30,7 +30,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 CORS_ALLOWED_ORIGINS = [
-    # "http://localhost:3000",
+    "http://localhost:3000",
     'https://social-chat-app-psi.vercel.app',
     'https://sourav-social-chat-app-62eb0b733f26.herokuapp.com',
 ]
@@ -167,9 +167,18 @@ CHANNEL_LAYERS = {
     },
 }
 
+# CHANNEL_LAYERS = {
+#     'default': {
+#         'BACKEND': 'channels_redis.core.RedisChannelLayer',
+#         'CONFIG': {
+#             "hosts": [('127.0.0.1', 6379)],  # Redis server
+#         },
+#     },
+# }
 
 CSRF_TRUSTED_ORIGINS = [
     'https://social-chat-app-psi.vercel.app',
+    'http://localhost:3000/'
 ]
 
 CORS_ALLOW_CREDENTIALS = True

@@ -13,7 +13,7 @@ const ReceivedInterests = () => {
 
 
     useEffect(() => {
-        axios.get('${baseUrl}/myapp/api/received-interests/', { withCredentials: true })
+        axios.get(`${baseUrl}/myapp/api/received-interests/`, { withCredentials: true })
             .then(response => {
                 setInterests(response.data);
             })
