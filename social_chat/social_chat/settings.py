@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['*']
 CORS_ALLOWED_ORIGINS = [
     'https://social-chat-app-psi.vercel.app',
     'https://sourav-social-chat-app-62eb0b733f26.herokuapp.com',
+    "http://localhost:3000/login"
 ]
 
 # Application definition
@@ -168,7 +169,8 @@ CHANNEL_LAYERS = {
 
 CSRF_TRUSTED_ORIGINS = [
     'https://sourav-social-chat-app-62eb0b733f26.herokuapp.com',
-    'https://social-chat-app-psi.vercel.app/'
+    'https://social-chat-app-psi.vercel.app/',
+    'http://localhost:3000/login',
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
