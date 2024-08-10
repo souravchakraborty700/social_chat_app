@@ -206,6 +206,7 @@ def api_received_interests(request):
     interests = Interest.objects.filter(recipient=request.user, accepted=False, rejected=False).values('id', 'sender__username', 'message')
     return JsonResponse(list(interests), safe=False)
 
+@csrf_exempt
 @login_required
 def api_accept_interest(request, interest_id):
     interest = get_object_or_404(Interest, id=interest_id, recipient=request.user)

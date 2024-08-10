@@ -16,7 +16,7 @@ const Chat = () => {
         fetchMessages();
 
         const socket = new WebSocket(
-            `wss://${window.location.host}/ws/chat/${interestId}/`
+            `wss://sourav-social-chat-app-62eb0b733f26.herokuapp.com/ws/chat/${interestId}/`
         );
 
         socket.onopen = function() {

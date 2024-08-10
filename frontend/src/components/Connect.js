@@ -12,7 +12,7 @@ const Connect = () => {
         fetchContacts();
 
         const notificationSocket = new WebSocket(
-            'wss://' + window.location.host + '/ws/notifications/'
+            `wss://sourav-social-chat-app-62eb0b733f26.herokuapp.com/ws/notifications/`
         );
 
         notificationSocket.onmessage = function(e) {
