@@ -3,6 +3,8 @@ import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import { getCsrfToken } from '../utils/csrfToken';
+
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -12,7 +14,17 @@ const Login = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    axios.post('https://sourav-social-chat-app-62eb0b733f26.herokuapp.com/myapp/api/login/', { username, password }, { withCredentials: true })
+  
+    const csrfToken = getCsrfToken();  // Get the CSRF token
+  
+    axios.post('https://sourav-social-chat-app-62eb0b733f26.herokuapp.com/myapp/api/login/', 
+      { username, password }, 
+      { 
+        withCredentials: true,
+        headers: { 
+          'X-CSRFToken': csrfToken  // Include the CSRF token in the request headers
+        }
+      })
       .then(response => {
         if (response.data.message === 'Login successful') {
           login(response.data.user); // Update the user in context
