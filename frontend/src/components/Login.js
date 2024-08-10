@@ -12,7 +12,7 @@ const Login = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    axios.post(`http://localhost:8000/myapp/api/login/`, { username, password }, { withCredentials: true })
+    axios.post(`https://sourav-social-chat-app-62eb0b733f26.herokuapp.com/myapp/api/login/`, { username, password }, { withCredentials: true })
       .then(response => {
         console.log('response state:', response);
         if (response.data.message === 'Login successful') {
