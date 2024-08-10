@@ -231,6 +231,7 @@ def api_connect(request):
     contacts = []
     for interest in interests:
         contact = interest.recipient if interest.sender == request.user else interest.sender
+        # Check if there are unread messages for this interest
         has_new_messages = interest.messages.filter(read=False).exclude(sender=request.user).exists()
         contacts.append({
             'contact': {'username': contact.username},
@@ -239,6 +240,8 @@ def api_connect(request):
         })
 
     return JsonResponse(contacts, safe=False)
+
+
 
 
 
@@ -290,9 +293,13 @@ def check_auth(request):
 @login_required
 def api_messages(request, interest_id):
     interest = get_object_or_404(Interest, id=interest_id)
+    # Mark messages as read when they are fetched by the recipient
+    Message.objects.filter(interest=interest, read=False).exclude(sender=request.user).update(read=True)
+    
     messages = Message.objects.filter(interest=interest).values('sender__username', 'text', 'timestamp')
     formatted_messages = [{'username': message['sender__username'], 'text': message['text'], 'timestamp': message['timestamp']} for message in messages]
     return JsonResponse(formatted_messages, safe=False)
+
 
 @csrf_exempt
 @login_required
@@ -304,15 +311,40 @@ def api_send_message(request, interest_id):
         message = Message.objects.create(interest=interest, sender=request.user, text=text)
         return JsonResponse({'status': 'Message sent'})
 
+# @csrf_exempt
+# @login_required
+# def api_send_interest(request, user_id):
+#     if request.method == 'POST':
+#         recipient = get_object_or_404(User, id=user_id)
+#         interest = Interest(sender=request.user, recipient=recipient, message='Interest sent')
+#         interest.save()
+#         return JsonResponse({'status': 'Interest sent'})
+#     return JsonResponse({'error': 'Invalid request'}, status=400)
+
 @csrf_exempt
 @login_required
 def api_send_interest(request, user_id):
     if request.method == 'POST':
+        data = json.loads(request.body)
         recipient = get_object_or_404(User, id=user_id)
-        interest = Interest(sender=request.user, recipient=recipient, message='Interest sent')
+        message = data.get('message', 'Interest sent')  # Get the message from the request body
+        interest = Interest(sender=request.user, recipient=recipient, message=message)
         interest.save()
+        
+        # Notify the recipient
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
+            f'notifications_{recipient.id}',
+            {
+                'type': 'send_notification',
+                'notification': f'{request.user.username}: Wants to connect! Msg: {message}',
+                'interest_id': interest.id,
+            }
+        )
+
         return JsonResponse({'status': 'Interest sent'})
     return JsonResponse({'error': 'Invalid request'}, status=400)
+
 
 @login_required
 def api_check_auth(request):

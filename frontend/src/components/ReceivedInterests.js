@@ -1,4 +1,3 @@
-// src/components/ReceivedInterests.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -11,7 +10,6 @@ const ReceivedInterests = () => {
     const navigate = useNavigate();
     const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
-
     useEffect(() => {
         axios.get(`${baseUrl}/myapp/api/received-interests/`, { withCredentials: true })
             .then(response => {
@@ -20,7 +18,7 @@ const ReceivedInterests = () => {
             .catch(error => {
                 console.error('There was an error fetching the received interests!', error);
             });
-    }, []);
+    }, [baseUrl]);
 
     const acceptInterest = (interestId) => {
         axios.post(`${baseUrl}/myapp/api/accept-interest/${interestId}/`, {}, {
@@ -43,17 +41,20 @@ const ReceivedInterests = () => {
         <>
             <Header />
             <div className="container">
-                
-                <ul>
-                    {interests.map(interest => (
-                        <li key={interest.id}>
-                            <div>
-                                <span>{interest.sender__username}: {interest.message}</span>
-                                <button onClick={() => acceptInterest(interest.id)}>Accept Request</button>
-                            </div>
-                        </li>
-                    ))}
-                </ul>
+                {interests.length > 0 ? (
+                    <ul>
+                        {interests.map(interest => (
+                            <li key={interest.id}>
+                                <div>
+                                    <span>{interest.sender__username}: {interest.message}</span>
+                                    <button onClick={() => acceptInterest(interest.id)}>Accept Request</button>
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    <p>No notification! You're all good</p>
+                )}
             </div>
         </>
     );

@@ -6,13 +6,15 @@ import './Connect.css';
 
 const Connect = () => {
     const [contacts, setContacts] = useState([]);
+    
+    const baseUrl = process.env.REACT_APP_API_BASE_URL;
+    const wsProtocol = baseUrl.startsWith('https') ? 'wss' : 'ws';
 
     useEffect(() => {
         fetchContacts();
 
-        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
         const notificationSocket = new WebSocket(
-            `${protocol}//${window.location.host}/ws/notifications/`
+            `${wsProtocol}://${baseUrl.split('://')[1]}/ws/notifications/`
         );
 
         notificationSocket.onmessage = function(e) {
@@ -27,10 +29,10 @@ const Connect = () => {
         return () => {
             notificationSocket.close();
         };
-    }, []);
+    }, [baseUrl]);
 
     const fetchContacts = () => {
-        axios.get(`https://sourav-social-chat-app-62eb0b733f26.herokuapp.com/myapp/api/connect/`, { withCredentials: true })
+        axios.get(`${baseUrl}/myapp/api/connect/`, { withCredentials: true })
             .then(response => setContacts(response.data))
             .catch(error => console.error('Error fetching contacts:', error));
     };

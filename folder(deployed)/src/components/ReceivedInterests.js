@@ -9,9 +9,11 @@ import './ReceivedInterests.css';
 const ReceivedInterests = () => {
     const [interests, setInterests] = useState([]);
     const navigate = useNavigate();
+    const baseUrl = process.env.REACT_APP_API_BASE_URL;
+
 
     useEffect(() => {
-        axios.get('https://sourav-social-chat-app-62eb0b733f26.herokuapp.com/myapp/api/received-interests/', { withCredentials: true })
+        axios.get(`${baseUrl}/myapp/api/received-interests/`, { withCredentials: true })
             .then(response => {
                 setInterests(response.data);
             })
@@ -21,7 +23,7 @@ const ReceivedInterests = () => {
     }, []);
 
     const acceptInterest = (interestId) => {
-        axios.post(`https://sourav-social-chat-app-62eb0b733f26.herokuapp.com/myapp/api/accept-interest/${interestId}/`, {}, {
+        axios.post(`${baseUrl}/myapp/api/accept-interest/${interestId}/`, {}, {
             withCredentials: true,
             headers: {
                 'X-CSRFToken': getCsrfToken()

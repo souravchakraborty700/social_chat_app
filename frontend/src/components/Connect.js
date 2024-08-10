@@ -6,12 +6,12 @@ import './Connect.css';
 
 const Connect = () => {
     const [contacts, setContacts] = useState([]);
-    
     const baseUrl = process.env.REACT_APP_API_BASE_URL;
-    const wsProtocol = baseUrl.startsWith('https') ? 'wss' : 'ws';
 
     useEffect(() => {
         fetchContacts();
+
+        const wsProtocol = baseUrl.startsWith('https') ? 'wss' : 'ws';
 
         const notificationSocket = new WebSocket(
             `${wsProtocol}://${baseUrl.split('://')[1]}/ws/notifications/`

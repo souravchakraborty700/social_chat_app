@@ -74,17 +74,18 @@ nav ul li a:hover {
 
 /* Header styles */
 .header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 60px; /* Ensure the navbar has a fixed height */
     background-color: #fff;
     padding: 1rem;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    text-align: center;
-    position: fixed;
-    top: 0;
     z-index: 1000;
     padding-left: 1rem;
     padding-right: 1rem;
 }
+
 
 .header .greeting {
     margin-bottom: 1rem;
@@ -103,19 +104,12 @@ nav ul li a:hover {
     justify-content: center;
 }
 
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 2rem;
-    background-color: white;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
 
 form input,
 form button {
-    display: block;
-    margin: 10px 0;
-    padding: 10px;
+    width: 100%; 
+    margin: 10px 0; 
+    padding: 10px; 
 }
 
 form input {
@@ -128,10 +122,43 @@ form button {
     color: white;
     border: none;
     cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+form {
+    margin-top: 20px; /* Add margin to create space between the error message and the form */
+    max-width: 400px;
+    margin: 20px auto 0 auto; /* Center the form and add space on top */
+    padding: 2rem;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
 }
 
 form button:hover {
     background-color: #555;
+}
+
+form label {
+    margin-bottom: 5px; /* Space between labels and inputs */
+    font-weight: bold;
+}
+
+form h1, .form-container h1 {
+    text-align: center; /* Center-align the text */
+    margin-bottom: 1rem; /* Add some space below the heading */
+    font-size: 2rem; /* Adjust the font size */
+    color: #333; /* Optional: Adjust the color */
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+form div {
+    margin-bottom: 15px; /* Space between form groups */
 }
 
 .message {
@@ -161,6 +188,42 @@ form button:hover {
     display: inline-block;
 }
 
+/* Error message styling */
+.error-message {
+    color: red;
+    margin-top: 10px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.error-message p {
+    margin-bottom: 10px;
+}
+
+/* Button inside the error message */
+.error-message button {
+    background-color: #333; /* Same background color as other buttons */
+    color: white;
+    border: none;
+    padding: 10px 20px; /* Same padding as other buttons */
+    cursor: pointer;
+    font-size: 1rem;
+    border-radius: 5px; /* Add rounded corners if needed */
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+.error-message button:hover {
+    background-color: #555; /* Same hover effect as other buttons */
+}
+
+.container {
+    max-width: 800px;
+    margin: 100px auto 0 auto; /* Add top margin (e.g., 80px) */
+    padding: 2rem;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
 /* Mobile responsiveness */
 @media (max-width: 600px) {
     .home-container h1 {
@@ -188,5 +251,14 @@ form button:hover {
     .nav-logged-in ul {
         flex-direction: column;
         gap: 0.5rem;
+    }
+}
+@media (max-width: 600px) {
+    .header {
+        height: 50px; /* Adjust height for smaller screens */
+    }
+
+    .container {
+        padding-top: calc(50px + 1.5rem); /* Adjust padding for smaller screens */
     }
 }

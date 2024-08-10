@@ -5,9 +5,10 @@ import axios from 'axios';
 
 const Logout = () => {
     const navigate = useNavigate();
+    const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
     useEffect(() => {
-        axios.post('https://sourav-social-chat-app-62eb0b733f26.herokuapp.com/myapp/api/logout/', {}, { withCredentials: true })
+        axios.post(`${baseUrl}/myapp/api/logout/`, {}, { withCredentials: true })
             .then(response => {
                 navigate('/login');
             })
