@@ -11,12 +11,15 @@ const Chat = () => {
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
     const [chatSocket, setChatSocket] = useState(null);
+    
+    const baseUrl = process.env.REACT_APP_API_BASE_URL;
+    const wsProtocol = baseUrl.startsWith('https') ? 'wss' : 'ws';
 
     useEffect(() => {
         fetchMessages();
 
         const socket = new WebSocket(
-            `wss://sourav-social-chat-app-62eb0b733f26.herokuapp.com/ws/chat/${interestId}/`
+            `${wsProtocol}://${baseUrl.split('://')[1]}/ws/chat/${interestId}/`
         );
 
         socket.onopen = function() {
@@ -41,10 +44,10 @@ const Chat = () => {
         return () => {
             socket.close();
         };
-    }, [interestId]);
+    }, [interestId, baseUrl]);
 
     const fetchMessages = () => {
-        axios.get(`https://sourav-social-chat-app-62eb0b733f26.herokuapp.com/myapp/api/messages/${interestId}/`, { withCredentials: true })
+        axios.get(`${baseUrl}/myapp/api/messages/${interestId}/`, { withCredentials: true })
             .then(response => setMessages(response.data))
             .catch(error => console.error('Error fetching messages:', error));
     };

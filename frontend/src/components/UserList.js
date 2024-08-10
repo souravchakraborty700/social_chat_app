@@ -9,9 +9,11 @@ const UserList = () => {
     const [users, setUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null);
     const [message, setMessage] = useState('');
+    const baseUrl = process.env.REACT_APP_API_BASE_URL;
+
 
     useEffect(() => {
-        axios.get('https://sourav-social-chat-app-62eb0b733f26.herokuapp.com/myapp/api/users/', { withCredentials: true })
+        axios.get('${baseUrl}/myapp/api/users/', { withCredentials: true })
             .then(response => {
                 setUsers(response.data);
             })
@@ -21,7 +23,7 @@ const UserList = () => {
     }, []);
 
     const sendInterest = (userId) => {
-        axios.post(`https://sourav-social-chat-app-62eb0b733f26.herokuapp.com/myapp/api/send-interest/${userId}/`, { message }, {
+        axios.post(`${baseUrl}/myapp/api/send-interest/${userId}/`, { message }, {
             withCredentials: true,
             headers: {
                 'X-CSRFToken': getCsrfToken()

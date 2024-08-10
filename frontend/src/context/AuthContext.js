@@ -10,10 +10,12 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         fetchUser();
     }, []);
+    const baseUrl = process.env.REACT_APP_API_BASE_URL;
+
 
     const fetchUser = async () => {
         try {
-            const response = await axios.get('https://sourav-social-chat-app-62eb0b733f26.herokuapp.com/myapp/api/check-auth/', { withCredentials: true });
+            const response = await axios.get('${baseUrl}/myapp/api/check-auth/', { withCredentials: true });
             setUser(response.data.user);
         } catch {
             setUser(null);

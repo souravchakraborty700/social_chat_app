@@ -10,7 +10,9 @@ const Register = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        axios.post('https://sourav-social-chat-app-62eb0b733f26.herokuapp.com/myapp/api/register/', { username, password }, { withCredentials: true })
+        const baseUrl = process.env.REACT_APP_API_BASE_URL;
+
+        axios.post('${baseUrl}/myapp/api/register/', { username, password }, { withCredentials: true })
             .then(response => {
                 if (response.data.message === 'User registered successfully') {
                     navigate('/login');

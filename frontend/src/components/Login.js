@@ -16,8 +16,10 @@ const Login = () => {
     event.preventDefault();
   
     const csrfToken = getCsrfToken();  // Get the CSRF token
-  
-    axios.post('https://sourav-social-chat-app-62eb0b733f26.herokuapp.com/myapp/api/login/', 
+    
+    const baseUrl = process.env.REACT_APP_API_BASE_URL;
+    
+    axios.post('${baseUrl}/myapp/api/login/', 
       { username, password }, 
       { 
         withCredentials: true,
