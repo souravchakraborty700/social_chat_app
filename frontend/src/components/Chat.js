@@ -114,7 +114,7 @@ const Chat = () => {
         fetchMessages();
 
         const socket = new WebSocket(
-            'ws://' + window.location.hostname + ':8000/ws/chat/' + interestId + '/'
+            'wss://' + window.location.hostname + ':8000/ws/chat/' + interestId + '/'
         );
 
         socket.onopen = function() {

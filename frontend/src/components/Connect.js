@@ -12,7 +12,7 @@ const Connect = () => {
         fetchContacts();
 
         const notificationSocket = new WebSocket(
-            'ws://' + window.location.host + '/ws/notifications/'
+            'wss://' + window.location.host + '/ws/notifications/'
         );
 
         notificationSocket.onmessage = function(e) {
