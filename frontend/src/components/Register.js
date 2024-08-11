@@ -26,7 +26,7 @@ const Register = () => {
       })
       .then(response => {
         if (response.data.message === 'Registration successful') {
-          navigate('/login');
+          navigate('/');
         } else {
           setErrorMessage('Registration failed. Try a different username.');
         }
