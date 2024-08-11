@@ -1,3 +1,4 @@
+// src/components/Login.js
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
@@ -31,13 +32,12 @@ const Login = () => {
           fetchUser(); // Fetch the user data
           navigate('/');
         } else {
-          setErrorMessage('It is wrong username or doesn\'t exist. You can Register.');
+          setErrorMessage('Incorrect username or password.');
         }
       })
       .catch(error => {
-        // If the user does not exist, show an error message
         if (error.response && error.response.status === 400) {
-          setErrorMessage('Incorrect Username or Password. If you are new you can Register.');
+          setErrorMessage('Incorrect username or password.');
         } else {
           console.error('There was an error logging in!', error);
         }
@@ -50,22 +50,30 @@ const Login = () => {
       {errorMessage && (
         <div className="error-message">
           <p>{errorMessage}</p>
-          <Link to="/register">
-            <button>Register</button>
-          </Link>
         </div>
       )}
       <form onSubmit={handleSubmit}>
         <div>
           <label>Username</label>
-          <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+          <input 
+            type="text" 
+            value={username} 
+            onChange={(e) => setUsername(e.target.value)} 
+          />
         </div>
         <div>
           <label>Password</label>
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <input 
+            type="password" 
+            value={password} 
+            onChange={(e) => setPassword(e.target.value)} 
+          />
         </div>
         <button type="submit">Login</button>
       </form>
+      <div className="register-link">
+        <p>Don't have an account? <Link to="/register"><button className="register-button">Register</button></Link></p>
+      </div>
     </div>
   );
 };
