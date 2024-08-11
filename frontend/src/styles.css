@@ -367,6 +367,44 @@ transition: background-color 0.3s;
     background-color: #555; /* Same hover effect as other buttons */
 }
 
+.no-contacts-message {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #666;
+    margin-top: 20px;
+    background-color: #f4f4f4;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.no-notification {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #666;
+    margin-top: 20px;
+    background-color: #f4f4f4;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+
+.hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    padding: 10px;
+    z-index: 1100;
+}
+
+.hamburger-bar {
+    width: 25px;
+    height: 3px;
+    background-color: #333;
+    margin: 4px 0;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Light shadow */
+}
+
 
 /* Mobile responsiveness */
 @media (max-width: 600px) {
@@ -406,59 +444,35 @@ transition: background-color 0.3s;
         padding-top: calc(50px + 1.5rem); /* Adjust padding for smaller screens */
     }
 }
+
 @media (max-width: 600px) {
-    .chat-box {
-        padding: 5px;
-    }
-
-    .chat-form {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .chat-form input,
-    .chat-form button {
-        width: 100%;
-        margin: 5px 0; /* Add space between input and button */
-    }
+.chat-box {
+    padding: 5px;
 }
 
-.no-contacts-message {
-    text-align: center;
-    font-size: 1.2rem;
-    color: #666;
-    margin-top: 20px;
-    background-color: #f4f4f4;
-    padding: 20px;
-    border-radius: 10px;
+.chat-form {
+    flex-direction: row; /* Keep input and button in a row */
+    align-items: center;
 }
 
-.no-notification {
-    text-align: center;
-    font-size: 1.2rem;
-    color: #666;
-    margin-top: 20px;
-    background-color: #f4f4f4;
-    padding: 20px;
-    border-radius: 10px;
+.chat-form input {
+    flex-grow: 1; /* Allow the input to take up most of the space */
+    margin-right: 5px; /* Add space between input and button */
+    padding: 15px; /* Increase padding for larger text area */
+    font-size: 1rem; /* Increase font size */
+    border-radius: 4px; /* Add border-radius for a smoother look */
+    box-sizing: border-box;
 }
 
-
-.hamburger {
-    display: none;
-    flex-direction: column;
-    cursor: pointer;
-    padding: 10px;
-    z-index: 1100;
+.chat-form button {
+    width: 60px; /* Set a fixed smaller width for the button */
+    padding: 10px; /* Adjust padding to make the button smaller */
+    font-size: 1rem;
+    white-space: nowrap; /* Prevent text wrapping */
+    border-radius: 4px;
+    box-sizing: border-box;
+    flex-shrink: 0; /* Ensure the button doesn't shrink */
 }
-
-.hamburger-bar {
-    width: 25px;
-    height: 3px;
-    background-color: #333;
-    margin: 4px 0;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Light shadow */
 }
 
 @media (max-width: 768px) {
