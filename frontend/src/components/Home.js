@@ -9,6 +9,7 @@ const Home = () => {
   if (loading) {
     return <div>Loading...</div>;
   }
+  
 
   return (
     <div className="home-container">
@@ -16,7 +17,8 @@ const Home = () => {
         <>
           <Header />
           <div className="welcome">
-            <h1>Welcome to Social Chat</h1>
+            <h1>Hello {user.username}!</h1>
+            <h2>Welcome to Social Chat...</h2>
             <p>Explore and connect with friends</p>
           </div>
         </>

@@ -20,6 +20,7 @@ urlpatterns = [
     path('api/messages/<int:interest_id>/', views.api_messages, name='api_messages'),
     path('api/send-message/<int:interest_id>/', views.api_send_message, name='api_send_message'),
     path('api/user-list/', views.api_user_list, name='api_user_list'),
+    path('api/get-chat-partner/<int:interest_id>/', views.get_chat_partner, name='get_chat_partner'),
     path('register/', views.register, name="register"),
     path('login/', views.user_login, name='login'),
     path('logout/', views.user_logout, name='logout'),

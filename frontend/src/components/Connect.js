@@ -11,10 +11,8 @@ const Connect = () => {
     useEffect(() => {
         fetchContacts();
 
-        const wsProtocol = baseUrl.startsWith('https') ? 'wss' : 'ws';
-
         const notificationSocket = new WebSocket(
-            `${wsProtocol}://${baseUrl.split('://')[1]}/ws/notifications/`
+            `${baseUrl.startsWith('https') ? 'wss' : 'ws'}://${baseUrl.split('://')[1]}/ws/notifications/`
         );
 
         notificationSocket.onmessage = function(e) {
@@ -29,7 +27,7 @@ const Connect = () => {
         return () => {
             notificationSocket.close();
         };
-    }, [baseUrl]);
+    }, []);
 
     const fetchContacts = () => {
         axios.get(`${baseUrl}/myapp/api/connect/`, { withCredentials: true })
@@ -41,17 +39,23 @@ const Connect = () => {
         <>
             <Header />
             <div className="container">
-                <ul>
-                    {contacts.map(contact => (
-                        <li key={contact.interest_id}>
-                            <div>
-                                <span>{contact.contact.username}</span>
-                                <Link to={`/chat/${contact.interest_id}`} className="chat-button">Chat</Link>
-                                {contact.has_new_messages && <span className="new-messages"> (new messages)</span>}
-                            </div>
-                        </li>
-                    ))}
-                </ul>
+                {contacts.length === 0 ? (
+                    <div className="no-contacts-message">
+                        <p>You don't have any friend yet to chat, please find friends from <Link to="/users">People</Link>, and send them an Interest Message to start chatting.</p>
+                    </div>
+                ) : (
+                    <ul>
+                        {contacts.map(contact => (
+                            <li key={contact.interest_id}>
+                                <div>
+                                    <span>{contact.contact.username}</span>
+                                    <Link to={`/chat/${contact.interest_id}`} className="chat-button">Chat</Link>
+                                    {contact.has_new_messages && <span className="new-messages"> (new messages)</span>}
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                )}
             </div>
         </>
     );

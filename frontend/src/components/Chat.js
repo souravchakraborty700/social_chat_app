@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
@@ -11,12 +11,15 @@ const Chat = () => {
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
     const [chatSocket, setChatSocket] = useState(null);
-    
+    const [chatPartner, setChatPartner] = useState(''); // State to hold the chat partner's username
+    const messagesEndRef = useRef(null);
+
     const baseUrl = process.env.REACT_APP_API_BASE_URL;
     const wsProtocol = baseUrl.startsWith('https') ? 'wss' : 'ws';
 
     useEffect(() => {
         fetchMessages();
+        fetchChatPartner(); // Fetch the chat partner's username
 
         const socket = new WebSocket(
             `${wsProtocol}://${baseUrl.split('://')[1]}/ws/chat/${interestId}/`
@@ -46,10 +49,20 @@ const Chat = () => {
         };
     }, [interestId, baseUrl]);
 
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
+
     const fetchMessages = () => {
         axios.get(`${baseUrl}/myapp/api/messages/${interestId}/`, { withCredentials: true })
             .then(response => setMessages(response.data))
             .catch(error => console.error('Error fetching messages:', error));
+    };
+
+    const fetchChatPartner = () => {
+        axios.get(`${baseUrl}/myapp/api/get-chat-partner/${interestId}/`, { withCredentials: true })
+            .then(response => setChatPartner(response.data.username))
+            .catch(error => console.error('Error fetching chat partner:', error));
     };
 
     const sendMessage = (e) => {
@@ -65,27 +78,41 @@ const Chat = () => {
         }
     };
 
+    const scrollToBottom = () => {
+        if (messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
+
     return (
         <>
             <Header />
             <div className="container">
-                <h1>Chat</h1>
+                <h1>You are chatting with {chatPartner}</h1> {/* Updated heading */}
                 <div className="chat-box">
-                    {messages.map((message, index) => (
-                        <div key={index} className="message">
-                            <strong>{message.username === user?.username ? 'You' : message.username}:</strong> {message.text}
-                        </div>
-                    ))}
+                    <div className="message-area">
+                        {messages.map((message, index) => (
+                            <div
+                                key={index}
+                                className={`message ${
+                                    message.username === user?.username ? 'you' : 'other'
+                                }`}
+                            >
+                                <strong>{message.username === user?.username ? 'You' : message.username}:</strong> {message.text}
+                            </div>
+                        ))}
+                        <div ref={messagesEndRef} />
+                    </div>
+                    <form onSubmit={sendMessage} className="chat-form">
+                        <input
+                            type="text"
+                            value={newMessage}
+                            onChange={(e) => setNewMessage(e.target.value)}
+                            placeholder="Type your message here"
+                        />
+                        <button type="submit">Send</button>
+                    </form>
                 </div>
-                <form onSubmit={sendMessage} className="chat-form">
-                    <input
-                        type="text"
-                        value={newMessage}
-                        onChange={(e) => setNewMessage(e.target.value)}
-                        placeholder="Type your message here"
-                    />
-                    <button type="submit">Send</button>
-                </form>
             </div>
         </>
     );

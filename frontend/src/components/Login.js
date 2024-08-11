@@ -37,7 +37,7 @@ const Login = () => {
       .catch(error => {
         // If the user does not exist, show an error message
         if (error.response && error.response.status === 400) {
-          setErrorMessage('It is wrong username or doesn\'t exist. You can Register.');
+          setErrorMessage('Incorrect Username or Password. If you are new you can Register.');
         } else {
           console.error('There was an error logging in!', error);
         }

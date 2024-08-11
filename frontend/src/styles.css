@@ -1,5 +1,9 @@
 /* src/styles.css */
 
+* {
+    box-sizing: border-box;
+}
+
 body, html {
     height: 100%;
     margin: 0;
@@ -7,6 +11,8 @@ body, html {
     flex-direction: column;
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
+    width: 100%;
+    overflow-x: hidden;
 }
 
 .app-container {
@@ -164,7 +170,22 @@ form div {
 .message {
     padding: 10px;
     margin: 10px 0;
-    border-bottom: 1px solid #ddd;
+    max-width: 100%; /* Limit the width of the message bubbles */
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+
+.message.you {
+    background-color: #d1ffd6; /* Light green background */
+    align-self: flex-end; /* Align to the right */
+    text-align: right; /* Text aligned to the right */
+}
+
+/* Messages sent by the other user */
+.message.other {
+    background-color: #f1f1f1; /* Light gray background */
+    align-self: flex-start; /* Align to the left */
+    text-align: left; /* Text aligned to the left */
 }
 
 .message strong {
@@ -172,20 +193,63 @@ form div {
 }
 
 .chat-box {
+    display: flex;
+    flex-direction: column;
     border: 1px solid #ddd;
     padding: 10px;
     margin-top: 20px;
+    max-width: 100%; /* Ensure the chat box does not exceed the container's width */
+    box-sizing: border-box; /* Include padding and border in the element's width */
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+/* Message area inside the chat box */
+.message-area {
+    flex-grow: 1;
+    overflow-y: auto; /* Allow vertical scrolling */
+    margin-bottom: 10px;
+    max-width: 100%; /* Ensure the message area does not exceed the container's width */
+    box-sizing: border-box;
 }
 
-.chat-box input {
-    width: calc(100% - 22px);
-    display: inline-block;
-    margin-right: 5px;
+
+/* Form for sending messages */
+.chat-form {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 10px;
+    box-sizing: border-box;
 }
 
-.chat-box button {
-    width: calc(20% - 22px);
-    display: inline-block;
+/* Input field */
+.chat-form input {
+    flex-grow: 1; /* Take up available space */
+    margin-right: 10px; /* Space between input and button */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Include padding and border in the element's width */
+    max-width: calc(100% - 120px); /* Adjust max-width to prevent overflow, considering the button width */
+}
+
+
+/* Send button */
+.chat-form button {
+    padding: 10px;
+    background-color: #333;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    width: 100px; /* Fixed width */
+    white-space: nowrap; /* Prevent text wrapping */
+    text-align: center; /* Center the text within the button */
+}
+
+.chat-form button:hover {
+    background-color: #555;
 }
 
 /* Error message styling */
@@ -261,4 +325,40 @@ form div {
     .container {
         padding-top: calc(50px + 1.5rem); /* Adjust padding for smaller screens */
     }
+}
+@media (max-width: 600px) {
+    .chat-box {
+        padding: 5px;
+    }
+
+    .chat-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .chat-form input,
+    .chat-form button {
+        width: 100%;
+        margin: 5px 0; /* Add space between input and button */
+    }
+}
+
+.no-contacts-message {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #666;
+    margin-top: 20px;
+    background-color: #f4f4f4;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.no-notification {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #666;
+    margin-top: 20px;
+    background-color: #f4f4f4;
+    padding: 20px;
+    border-radius: 10px;
 }

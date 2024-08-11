@@ -311,16 +311,6 @@ def api_send_message(request, interest_id):
         message = Message.objects.create(interest=interest, sender=request.user, text=text)
         return JsonResponse({'status': 'Message sent'})
 
-# @csrf_exempt
-# @login_required
-# def api_send_interest(request, user_id):
-#     if request.method == 'POST':
-#         recipient = get_object_or_404(User, id=user_id)
-#         interest = Interest(sender=request.user, recipient=recipient, message='Interest sent')
-#         interest.save()
-#         return JsonResponse({'status': 'Interest sent'})
-#     return JsonResponse({'error': 'Invalid request'}, status=400)
-
 @csrf_exempt
 @login_required
 def api_send_interest(request, user_id):
@@ -354,3 +344,18 @@ def api_check_auth(request):
 # To server the react app
 class IndexView(TemplateView):
     template_name = 'frontend/build/index.html'
+
+from django.contrib.auth.models import User
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
+
+@login_required
+def get_chat_partner(request, interest_id):
+    interest = get_object_or_404(Interest, id=interest_id)
+    if request.user == interest.sender:
+        chat_partner = interest.recipient
+    else:
+        chat_partner = interest.sender
+    
+    return JsonResponse({'username': chat_partner.username})
+

@@ -53,7 +53,9 @@ const ReceivedInterests = () => {
                         ))}
                     </ul>
                 ) : (
-                    <p>No notification! You're all good</p>
+                    <div className="no-notification">
+                        <p>No notification! You're all good</p>
+                    </div>                    
                 )}
             </div>
         </>

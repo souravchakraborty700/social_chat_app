@@ -158,23 +158,23 @@ MESSAGE_TAGS = {
     message_constants.ERROR: 'error',
 }
 
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            "hosts": [os.environ.get('REDIS_URL')],
-        },
-    },
-}
-
 # CHANNEL_LAYERS = {
 #     'default': {
 #         'BACKEND': 'channels_redis.core.RedisChannelLayer',
 #         'CONFIG': {
-#             "hosts": [('127.0.0.1', 6379)],  # Redis server
+#             "hosts": [os.environ.get('REDIS_URL')],
 #         },
 #     },
 # }
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],  # Redis server
+        },
+    },
+}
 
 CSRF_TRUSTED_ORIGINS = [
     'https://social-chat-app-psi.vercel.app',
