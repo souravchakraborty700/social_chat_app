@@ -7,7 +7,6 @@ import { getCsrfToken } from '../utils/csrfToken';
 const Register = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = (event) => {
@@ -15,7 +14,7 @@ const Register = () => {
 
     const csrfToken = getCsrfToken();  // Get the CSRF token
     const baseUrl = process.env.REACT_APP_API_BASE_URL;
-    
+
     axios.post(`${baseUrl}/myapp/api/register/`, 
       { username, password }, 
       { 
@@ -24,27 +23,19 @@ const Register = () => {
           'X-CSRFToken': csrfToken  // Include the CSRF token in the request headers
         }
       })
-      .then(response => {
-        // Redirect to the home page after successful registration
+      .then(() => {
+        // Directly redirect to the home page after successful registration
         navigate('/');
       })
       .catch(error => {
-        if (error.response && error.response.status === 400) {
-          setErrorMessage('This username already exists. Try a different one.');
-        } else {
-          console.error('There was an error registering!', error);
-        }
+        console.error('There was an error registering!', error);
+        // Optionally log the error or show a generic message
       });
   };
 
   return (
     <div className="form-container">
       <h1>Register</h1>
-      {errorMessage && (
-        <div className="error-message">
-          <p>{errorMessage}</p>
-        </div>
-      )}
       <form onSubmit={handleSubmit}>
         <div>
           <label>Username</label>
