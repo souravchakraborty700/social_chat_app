@@ -13,3 +13,5 @@ Responsive
 Thrid party cookies blocking
 Notification alert
 
+Not able to test chat functionality
+

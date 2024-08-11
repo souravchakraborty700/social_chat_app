@@ -31,6 +31,63 @@ body, html {
     margin-top: 100px; /* Adjust for fixed header */
 }
 
+.nav-logged-in {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* .nav-logged-in ul {
+    justify-content: center;
+    gap: 2rem;
+    background-color: #fff;
+    padding: 1rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+} */
+
+.nav-logged-in ul {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-logged-in.open ul {
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: center;
+    background-color: #fff;
+    position: absolute;
+    top: 60px; /* Adjust based on the header height */
+    left: 0;
+    width: 100%;
+    padding: 10px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.nav-logged-in ul li {
+    display: block;
+    padding: 10px 20px;
+    text-align: center;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Shadow on each navbar item */
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.nav-logged-in ul li:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Slightly deeper shadow on hover */
+    transform: translateY(-2px); /* Lift effect on hover */
+}
+
+.nav-logged-in ul li a {
+    color: #333;
+    text-decoration: none;
+    font-size: 1.2rem;
+    display: block;
+}
+
 nav ul {
     list-style: none;
     padding: 0;
@@ -55,6 +112,7 @@ nav ul li a {
 nav ul li a:hover {
     background-color: #333;
     color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .home-container h1 {
@@ -69,16 +127,8 @@ nav ul li a:hover {
     color: #666;
 }
 
-.nav-logged-in ul {
-    justify-content: center;
-    gap: 2rem;
-    background-color: #fff;
-    padding: 1rem;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-}
 
-/* Header styles */
+
 .header {
     position: fixed;
     top: 0;
@@ -86,12 +136,9 @@ nav ul li a:hover {
     height: 60px; /* Ensure the navbar has a fixed height */
     background-color: #fff;
     padding: 1rem;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Enhanced shadow on entire navbar */
     z-index: 1000;
-    padding-left: 1rem;
-    padding-right: 1rem;
 }
-
 
 .header .greeting {
     margin-bottom: 1rem;
@@ -361,4 +408,61 @@ form div {
     background-color: #f4f4f4;
     padding: 20px;
     border-radius: 10px;
+}
+
+
+.hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    padding: 10px;
+    z-index: 1100;
+}
+
+.hamburger-bar {
+    width: 25px;
+    height: 3px;
+    background-color: #333;
+    margin: 4px 0;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Light shadow */
+}
+
+@media (max-width: 768px) {
+    .hamburger {
+        display: flex;
+    }
+
+    .nav-logged-in {
+        display: none;
+    }
+
+    .nav-logged-in.open {
+        display: block;
+    }
+
+    .nav-logged-in ul {
+        flex-direction: column;
+        gap: 0;
+        width: 100%;
+    }
+
+    .nav-logged-in ul li {      
+        
+        display: block; /* Make each item take full width */
+        padding: 10px 20px;
+        width: 100%; /* Ensure full width */
+        text-align: center; /* Center align text */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s ease;
+        border-top: 1px solid #ddd;
+    }
+
+    .nav-logged-in ul li:first-child {
+        border-top: none;
+    }
+
+    .nav-logged-in ul li a {
+        padding: 10px 0;
+    }
 }

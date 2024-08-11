@@ -241,10 +241,6 @@ def api_connect(request):
 
     return JsonResponse(contacts, safe=False)
 
-
-
-
-
 @csrf_exempt
 def api_login(request):
     if request.method == 'POST':

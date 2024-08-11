@@ -18,7 +18,7 @@ class Message(models.Model):
     sender = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
-    read = models.BooleanField(default=False)  # New field
+    read = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.sender}: {self.text[:20]}"
