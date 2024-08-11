@@ -25,11 +25,8 @@ const Register = () => {
         }
       })
       .then(response => {
-        if (response.data.message === 'Registration successful') {
-          navigate('/');
-        } else {
-          setErrorMessage('Registration failed. Try a different username.');
-        }
+        // Redirect to the home page after successful registration
+        navigate('/');
       })
       .catch(error => {
         if (error.response && error.response.status === 400) {
