@@ -37,6 +37,23 @@ const ReceivedInterests = () => {
         });
     };
 
+    const rejectInterest = (interestId) => {
+        axios.post(`${baseUrl}/myapp/api/reject-interest/${interestId}/`, {}, {
+            withCredentials: true,
+            headers: {
+                'X-CSRFToken': getCsrfToken()
+            }
+        })
+        .then(response => {
+            if (response.status === 200) {
+                setInterests(interests.filter(interest => interest.id !== interestId));
+            }
+        })
+        .catch(error => {
+            console.error('There was an error rejecting the interest!', error);
+        });
+    };
+
     return (
         <>
             <Header />
@@ -48,6 +65,7 @@ const ReceivedInterests = () => {
                                 <div>
                                     <span>{interest.sender__username}: {interest.message}</span>
                                     <button onClick={() => acceptInterest(interest.id)}>Accept Request</button>
+                                    <button onClick={() => rejectInterest(interest.id)}>Reject Request</button>
                                 </div>
                             </li>
                         ))}

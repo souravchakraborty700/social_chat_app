@@ -214,12 +214,15 @@ def api_accept_interest(request, interest_id):
     interest.save()
     return JsonResponse({'status': 'accepted', 'interest_id': interest.id})
 
+@csrf_exempt
 @login_required
 def api_reject_interest(request, interest_id):
-    interest = get_object_or_404(Interest, id=interest_id, recipient=request.user)
-    interest.rejected = True
-    interest.save()
-    return JsonResponse({'status': 'rejected'})
+    try:
+        interest = Interest.objects.get(id=interest_id, recipient=request.user)
+        interest.delete()  # or you can set a `rejected` status instead of deleting
+        return JsonResponse({'status': 'rejected'})
+    except Interest.DoesNotExist:
+        return JsonResponse({'status': 'error', 'message': 'Interest not found'}, status=404)
 
 @login_required
 def api_connect(request):

@@ -158,6 +158,7 @@ MESSAGE_TAGS = {
     message_constants.ERROR: 'error',
 }
 
+# Redis for production deployement:
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
@@ -167,6 +168,7 @@ CHANNEL_LAYERS = {
     },
 }
 
+# Redis for local developement:
 # CHANNEL_LAYERS = {
 #     'default': {
 #         'BACKEND': 'channels_redis.core.RedisChannelLayer',
